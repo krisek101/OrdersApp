@@ -61,14 +61,16 @@ app.controller('AddOrderController', function ($scope, $http, $timeout) {
     };
 
     $scope.addOrderElement = function (orderElement) {
-        if (orderElement !== null) {
-            $http({
-                method: 'GET',
-                url: '/db/store/decrease/' + orderElement.id
-            });
-            $scope.elements.push(orderElement);
-            $scope.rectangle.color = "white";
-            $scope.sendCondition = false;
+        if (orderElement != null) {
+            if(orderElement.name != null && orderElement.age != null && orderElement.color != null && orderElement.size != null) {
+                $http({
+                    method: 'GET',
+                    url: '/db/store/decrease/' + orderElement.id
+                });
+                $scope.elements.push(orderElement);
+                $scope.rectangle.color = "white";
+                $scope.sendCondition = false;
+            }
         }
     };
 
