@@ -1,6 +1,15 @@
-GET     /                           controllers.HomeController.index
+# Views
+GET         /                                    controllers.HomeController.index
+GET         /orders/list                         controllers.OrdersController.list
+
+# Database
 + nocsrf
-POST    /orders/add                 controllers.OrdersController.add
-GET     /orders/list                controllers.OrdersController.list
-GET     /orders/elements/:id        controllers.OrdersController.elements(id: Long)
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+POST        /db/orders/add                       controllers.DbController.addOrder
+GET         /db/store/increase/:productId        controllers.DbController.increaseProductQuantity(productId: Long)
+GET         /db/elements/:orderid                controllers.DbController.getElementsByOrderId(orderid: Long)
+GET         /db/orders/list                      controllers.DbController.getAllOrders
+GET         /db/store/decrease/:productId        controllers.DbController.decreaseProductQuantity(productId: Long)
+GET         /db/store/search/:color/:size        controllers.DbController.getProduct(color: String, size: String)
+
+# Others
+GET         /assets/*file                        controllers.Assets.versioned(path="/public", file: Asset)

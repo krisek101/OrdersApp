@@ -1,0 +1,103 @@
+@(message: String)
+<div class="row" ng-controller="AddOrderController" ng-init="initMethods()">
+    <div class="col-md-6">
+        <h1 class="text-center">Dodawanie elementów</h1>
+        <form name="addElementForm" ng-submit="resetForm(addElementForm)">
+            <div class="form-group">
+                <label for="inputName">Imię (jeden wyraz składający się z samych liter):</label>
+                <input class="form-control" name="orderName" id="orderName" ng-blur="capitalizeName()" pattern="[a-zA-Z]+" ng-model="orderElement.name" placeholder="Imię" required>
+            </div>
+            <div class="form-group">
+                <label for="inputAge">Wiek (18-100 lat):</label>
+                <input type="number" class="form-control" ng-model="orderElement.age" min="18" max="100" placeholder="Wiek" required>
+            </div>
+            <div class="form-group">
+                <label>Kolor:</label>
+                <select ng-model="orderElement.color" ng-change="updateRect()" class="form-control" required>
+                    <option value="" disabled selected>Wybierz kolor</option>
+                    <option ng-repeat="x in colors" value="{{x}}" >{{x}}</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Rozmiar:</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="orderElement.size" value="S" ng-change="updateRect()" ng-required="!orderElement.size">
+                                S
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="orderElement.size" value="M" ng-change="updateRect()" ng-required="!orderElement.size">
+                                M
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="orderElement.size" value="L" ng-change="updateRect()" ng-required="!orderElement.size">
+                                L
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" ng-model="orderElement.size" value="XL" ng-change="updateRect()" ng-required="!orderElement.size">
+                                XL
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <svg width="100%" height="100%">
+                        <rect x="20%" y="20%" width="{{ rectangle.width }}" height="{{ rectangle.height }}" fill="{{ rectangle.color }}" ></rect>
+                    </svg>
+                </div>
+            </div>
+            <button class="btn btn-info" ng-click="addOrderElement(orderElement)" ng-if="orderElement.quantity!=0">
+                Zapisz</button>
+            <button class="btn btn-info" ng-if="orderElement.quantity==0" disabled>Zapisz</button>
+            <div class="alert alert-danger alert-dismissible topOffset animate-repeat" role="alert" ng-if="orderElement.quantity==0">
+                Brak wybranego produktu w bazie danych. Proszę zmienić rozmiar lub kolor.
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h1 class="text-center">Wysyłanie zamówienia</h1>
+        <table class="table table-hover text-center">
+            <thead>
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Imię</th>
+                    <th class="text-center">Wiek</th>
+                    <th class="text-center">Kolor</th>
+                    <th class="text-center">Rozmiar</th>
+                    <th class="text-center">Akcja</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="animate-repeat" ng-repeat="(index, orderElement) in elements">
+                    <td>{{ index+1 }}</td>
+                    <td>{{ orderElement.name }}</td>
+                    <td>{{ orderElement.age }}</td>
+                    <td>{{ orderElement.color }}</td>
+                    <td>{{ orderElement.size }}</td>
+                    <td><button class="btn-danger btn-sm" ng-click="removeOrderElement(orderElement)">X</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-info alert-dismissible text-center" role="alert" ng-if="elements.length==0">
+            Brak elementów w zamówieniu.
+        </div>
+        <button class="btn btn-info" ng-click="addOrder()" ng-if="elements.length!=0">Wyślij</button>
+        <button class="btn btn-info" ng-if="elements.length==0" disabled>Wyślij</button>
+        <div class="alert alert-success alert-dismissible topOffset animate-repeat" role="alert" ng-if="sendStatus.ok">
+            Zamówienie zostało wysłane!
+        </div>
+        <div class="alert alert-danger alert-dismissible topOffset animate-repeat" role="alert" ng-if="sendStatus.noProductsInDb">
+            Wybrane produkty nie znajdują się obecnie w magazynie.
+        </div>
+    </div>
+</div>
+<br>
+<a href="@routes.OrdersController.list()" class="btn btn-success btn-lg btn-block">Podsumowanie zamówień</a>

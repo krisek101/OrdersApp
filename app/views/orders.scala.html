@@ -1,27 +1,24 @@
-@import models.Order.Order
-@(orders: List[Order])
+@()
 @main("Zamówienia") {
-    <div class="row" ng-controller="AddOrderController">
+    <div class="row" ng-controller="AddOrderController" ng-init="getOrders()">
         <h1 class="text-center">Podsumowanie zamówień</h1>
-        <table class="table table-hover text-center table-bordered" >
+        <table class="table text-center table-bordered" >
             <thead>
                 <tr>
                     <th class="text-center">ID zamówienia</th>
                     <th class="text-center">Data</th>
                 </tr>
             </thead>
-            <tbody >
-            @for(order <- orders) {
-                <tr style="background: darkseagreen; color: white;cursor: pointer;" ng-if="activeOrderID=='@order.id'" ng-click="showOrderElements('@order.id')">
-                    <td>@order.id</td>
-                    <td>@order.date</td>
+            <tbody ng-repeat="order in orders">
+                <tr class="pointer active-row" ng-if="activeOrderID==order.id" ng-click="showOrderElements(order.id)">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.date }}</td>
                 </tr>
-                <tr ng-if="activeOrderID!='@order.id'" style="cursor: pointer;" ng-click="showOrderElements('@order.id')">
-                    <td>@order.id</td>
-                    <td>@order.date</td>
+                <tr ng-if="activeOrderID!=order.id" class="pointer" ng-click="showOrderElements(order.id)">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.date }}</td>
                 </tr>
-                <tr style="background: #4e4e4e;
-                    color: #fff;" ng-if="activeOrderID=='@order.id'">
+                <tr class="special-row" ng-if="activeOrderID==order.id">
                     <td colspan="2">
                         <div class="col-md-1"><b>#</b></div>
                         <div class="col-md-3"><b>Imię</b></div>
@@ -30,8 +27,7 @@
                         <div class="col-md-2"><b>Rozmiar</b></div>
                     </td>
                 </tr>
-                <tr style="background: #a9a9a9;
-                    text-color: #fff;" ng-repeat="(index, orderElement) in activeElements" ng-if="activeOrderID=='@order.id'">
+                <tr class="element-row" ng-repeat="(index, orderElement) in activeElements" ng-if="activeOrderID==order.id">
                     <td colspan="2">
                         <div class="col-md-1">{{ index+1 }}</div>
                         <div class="col-md-3">{{ orderElement.name }}</div>
@@ -40,15 +36,14 @@
                         <div class="col-md-2">{{ orderElement.size }}</div>
                     </td>
                 </tr>
-            }
             </tbody>
         </table>
-        <div class="alert alert-info alert-dismissible text-center" role="alert" ng-if=@orders.isEmpty>
+        <div class="alert alert-info alert-dismissible text-center" role="alert" ng-if=orders.length==0>
             Lista zamówień jest pusta
         </div>
-        <button class="btn btn-success btn-block">Szukaj</button>
+        <button ng-click="getOrders()" class="btn btn-success btn-block">Szukaj</button>
         <br>
-        <a href="/"><button class="btn btn-info btn-block">Powrót do strony zamawiania</button></a>
+        <a href="@routes.HomeController.index()" class="btn btn-info btn-block">Powrót do strony zamawiania</a>
     </div>
 
 }

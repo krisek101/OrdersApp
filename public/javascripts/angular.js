@@ -8338,7 +8338,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
     function flushOnChangesQueue() {
       try {
         if (!(--onChangesTtl)) {
-          // We have hit the TTL limit so reset everything
+          // We have hit the TTL limit so resetForm everything
           onChangesQueue = undefined;
           throw $compileMinErr('infchng', '{0} $onChanges() iterations reached. Aborting!\n', TTL);
         }
@@ -10311,7 +10311,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
               compare = function simpleCompare(a, b) { return a === b || (a !== a && b !== b); };
             }
             parentSet = parentGet.assign || function() {
-              // reset the change, or we will throw this exception on every $digest
+              // resetForm the change, or we will throw this exception on every $digest
               lastValue = destination[scopeName] = parentGet(scope);
               throw $compileMinErr('nonassign',
                   'Expression \'{0}\' in attribute \'{1}\' used with directive \'{2}\' is non-assignable!',
@@ -18524,7 +18524,7 @@ function adjustMatcher(matcher) {
   } else if (isRegExp(matcher)) {
     // The only other type of matcher allowed is a Regexp.
     // Match entire URL / disallow partial matches.
-    // Flags are reset (i.e. no global, ignoreCase or multiline)
+    // Flags are resetForm (i.e. no global, ignoreCase or multiline)
     return new RegExp('^' + matcher.source + '$');
   } else {
     throw $sceMinErr('imatcher',
@@ -20826,7 +20826,7 @@ function roundNumber(parsedNumber, fractionSize, minFrac, maxFrac) {
         digits[j] = 0;
       }
     } else {
-      // We rounded to zero so reset the parsedNumber
+      // We rounded to zero so resetForm the parsedNumber
       fractionLen = Math.max(0, fractionLen);
       parsedNumber.i = 1;
       digits.length = Math.max(1, roundAt = fractionSize + 1);
@@ -22705,7 +22705,7 @@ FormController.prototype = {
    * Rollback all form controls pending updates to the `$modelValue`.
    *
    * Updates may be pending by a debounced event or because the input is waiting for a some future
-   * event defined in `ng-model-options`. This method is typically needed by the reset button of
+   * event defined in `ng-model-options`. This method is typically needed by the resetForm button of
    * a form that uses `ng-model-options` to pend updates.
    */
   $rollbackViewValue: function() {
@@ -24491,7 +24491,7 @@ var inputType = {
   'hidden': noop,
   'button': noop,
   'submit': noop,
-  'reset': noop,
+  "resetForm": noop,
   'file': noop
 };
 

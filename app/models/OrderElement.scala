@@ -10,7 +10,7 @@ object OrderElement {
 
   case class OrderElement(name: String, age: Int, color: String, size: String)
 
-  implicit val orderFormat: OFormat[OrderElement] = Json.format[OrderElement]
+  implicit val orderElementFormat: OFormat[OrderElement] = Json.format[OrderElement]
 
   implicit val jsonReads: Reads[OrderElement] = (
     (JsPath \ "name").read[String] and
